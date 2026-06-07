@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balloon Bash 🎈</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Playfair+Display:wght@700;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e0033, #4a007a, #9f1a8c);
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* ==================== BALLOON GAME ==================== */
+        #game {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-header {
+            padding: 15px 20px;
+            text-align: center;
+            background: rgba(0,0,0,0.6);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        .game-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 10px;
+            font-size: 1.3rem;
+        }
+
+        .progress-container {
+            height: 14px;
+            background: #222;
+            border-radius: 10px;
+            max-width: 700px;
+            margin: 12px auto;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #00ffcc, #ff00aa);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .balloon-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .balloon {
+            position: absolute;
+            width: 92px;
+            height: 118px;
+            border-radius: 50% 50% 45% 45%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.6rem;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+            transition: transform 0.2s;
+            user-select: none;
+        }
+
+        .balloon:hover {
+            transform: scale(1.08);
+        }
+
+        .string {
+            position: absolute;
+            width: 4px;
+            height: 95px;
+            background: linear-gradient(transparent, rgba(255,255,255,0.8));
+            top: 112px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .special {
+            animation: specialPulse 1.2s infinite alternate;
+        }
+
+        @keyframes specialPulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.15); }
+        }
+
+        /* ==================== WISHES PAGE ==================== */
+        #wishes {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px;
+            height: 100vh;
+            overflow-y: auto;
+            background: linear-gradient(135deg, #2a0033, #000022);
+        }
+
+        .final-title {
+            font-size: 4.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px #ff00aa;
+        }
+
+        .wish-card {
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(12px);
+            border-radius: 25px;
+            padding: 35px;
+            max-width: 820px;
+            margin: 20px auto;
+            border: 1px solid rgba(255,255,255,0.25);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BALLOON GAME (Starts First) -->
+    <div id="game">
+        <div class="game-header">
+            <h1>🎈 Balloon Bash 🎈</h1>
+            <div class="stats">
+                <div>Popped: <span id="count">0</span>/31</div>
+                <div>Score: <span id="score">0</span></div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress"></div>
+            </div>
+        </div>
+        
+        <div class="balloon-container" id="balloon-container"></div>
+    </div>
+
+    <!-- WISHES PAGE -->
+    <div id="wishes">
+    <h1 class="final-title">🎉 HAPPY BIRTHDAY VAHINI SAHEB! 🎉</h1>
+
+    <div class="wish-card">
+        <h2 style="margin-bottom:15px;">Dear Vahini Saheb,</h2>
+        <p style="font-size:1.4rem; line-height:1.9;">
+            Happy Birthday Vahini Dear,<br>
+            Let's party when you're near,<br>
+            With endless smiles and no fear! 🎂✨
+        </p>
+    </div>
+
+    <div class="wish-card">
+        <h2>Best Wishes For You:</h2>
+        <ul style="font-size:1.3rem; line-height:2.1; margin:20px 0 0 20px;">
+            <li>🌸 Happiness in every moment</li>
+            <li>❤️ Good health and peace</li>
+            <li>😊 Endless smiles and joy</li>
+            <li>🌟 Success in everything you do</li>
+            <li>🎉 A wonderful year ahead</li>
+        </ul>
+    </div>
+
+    <div class="wish-card" style="text-align:center; font-size:1.5rem;">
+        Wishing you a day full of love,<br>
+        laughter, happiness, and beautiful memories.<br><br>
+        <strong>Have a fantastic Birthday! 🎂🎈</strong>
+    </div>
+
+    <button onclick="location.reload()" 
+        style="margin-top:30px; padding:16px 45px; font-size:1.5rem; border-radius:50px; background:linear-gradient(#ff0066,#ff44aa); border:none; cursor:pointer;">
+        Play Again 🎮
+    </button>
+</div>
+
+    <script>
+        let popped = 0;
+        let score = 0;
+        const target = 31;
+        let gameActive = true;
+
+        const colors = ['#ff0066', '#00ffcc', '#ffd700', '#ff33ff', '#66ffff', '#ff6699', '#ff9933'];
+
+        function createBalloon() {
+            if (!gameActive) return;
+            
+            const container = document.getElementById('balloon-container');
+            const balloon = document.createElement('div');
+            balloon.className = 'balloon';
+            
+            const isSpecial = Math.random() < 0.18; // 18% special balloons
+            if (isSpecial) {
+                balloon.classList.add('special');
+                balloon.style.width = '110px';
+                balloon.style.height = '135px';
+            }
+
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            balloon.style.background = `linear-gradient(${color}, #990044)`;
+            balloon.style.left = Math.random() * 88 + 'vw';
+            balloon.style.top = '105vh';
+
+            // Random number
+            balloon.innerHTML = `
+                <div style="margin-top: 35px; font-size:1.3rem; font-weight:600;">
+                    ${Math.floor(Math.random() * 30) + 1}
+                </div>
+                <div class="string"></div>
+            `;
+
+            const duration = isSpecial ? (Math.random() * 5 + 7) : (Math.random() * 6 + 9);
+            balloon.style.transition = `top ${duration}s linear`;
+
+            balloon.onclick = () => popBalloon(balloon, isSpecial);
+
+            container.appendChild(balloon);
+
+            // Start floating up
+            setTimeout(() => {
+                balloon.style.top = '-30vh';
+            }, 50);
+
+            setTimeout(() => {
+                if (balloon.parentElement) balloon.remove();
+            }, duration * 1000 + 500);
+        }
+
+        function popBalloon(balloon, isSpecial) {
+            if (!gameActive) return;
+
+            popped++;
+            const points = isSpecial ? 150 : 100;
+            score += points;
+
+            document.getElementById('count').textContent = popped;
+            document.getElementById('score').textContent = score;
+            document.getElementById('progress').style.width = (popped / target * 100) + '%';
+
+            // Pop animation
+            balloon.style.transition = 'transform 0.25s, opacity 0.25s';
+            balloon.style.transform = 'scale(0.1) rotate(25deg)';
+            balloon.style.opacity = '0';
+
+            createExplosion(balloon.offsetLeft + 45, balloon.offsetTop + 40);
+
+            setTimeout(() => balloon.remove(), 300);
+
+            if (popped >= target) {
+                gameActive = false;
+                setTimeout(() => {
+                    document.getElementById('game').style.display = 'none';
+                    document.getElementById('wishes').style.display = 'flex';
+                    launchBigCelebration();
+                }, 800);
+            }
+        }
+
+        function createExplosion(x, y) {
+            for (let i = 0; i < 22; i++) {
+                const piece = document.createElement('div');
+                piece.style.position = 'absolute';
+                piece.style.left = x + 'px';
+                piece.style.top = y + 'px';
+                piece.style.width = '13px';
+                piece.style.height = '13px';
+                piece.style.borderRadius = '50%';
+                piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+                document.body.appendChild(piece);
+
+                const angle = Math.random() * Math.PI * 2;
+                const dist = 60 + Math.random() * 70;
+
+                piece.animate([
+                    { transform: 'translate(0,0) scale(1)', opacity: 1 },
+                    { transform: `translate(${Math.cos(angle)*dist}px, ${Math.sin(angle)*dist - 80}px) scale(0.2)`, opacity: 0 }
+                ], {
+                    duration: 650,
+                    easing: 'ease-out'
+                });
+
+                setTimeout(() => piece.remove(), 700);
+            }
+        }
+
+        function launchBigCelebration() {
+            for (let i = 0; i < 280; i++) {
+                setTimeout(() => {
+                    const c = document.createElement('div');
+                    c.style.position = 'fixed';
+                    c.style.width = '11px';
+                    c.style.height = '11px';
+                    c.style.background = colors[Math.floor(Math.random()*colors.length)];
+                    c.style.left = Math.random() * 100 + 'vw';
+                    c.style.top = '-30px';
+                    c.style.opacity = Math.random() * 0.7 + 0.5;
+                    document.body.appendChild(c);
+
+                    c.animate([
+                        { transform: 'translateY(0) rotate(0deg)' },
+                        { transform: `translateY(${window.innerHeight + 100}px) rotate(${Math.random()*1200}deg)` }
+                    ], {
+                        duration: 2800 + Math.random() * 2200,
+                        easing: 'linear'
+                    });
+
+                    setTimeout(() => c.remove(), 6000);
+                }, i * 4);
+            }
+        }
+
+        // Start the game directly
+        function startBalloonGame() {
+            // Spawn initial balloons
+            for (let i = 0; i < 9; i++) {
+                setTimeout(() => createBalloon(), i * 220);
+            }
+
+            // Continuous spawning with increasing rate
+            let spawnRate = 680;
+            const spawnInterval = setInterval(() => {
+                if (!gameActive) {
+                    clearInterval(spawnInterval);
+                    return;
+                }
+                if (document.querySelectorAll('.balloon').length < 16) {
+                    createBalloon();
+                }
+                // Make it faster as you progress
+                if (popped > 15 && spawnRate > 420) spawnRate -= 30;
+            }, spawnRate);
+        }
+
+        // Auto start the game
+        window.onload = startBalloonGame;
+    </script>
+</body>
+</html>
